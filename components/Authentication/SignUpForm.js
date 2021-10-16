@@ -28,6 +28,42 @@ class SignUpForm extends React.Component {
         })
     }
 
+    validateInput = async(e) => {
+        e.preventDefault()
+
+        let username = this.state.username
+        let email = this.state.email
+        let password = this.state.password
+
+        // Is there some sort of input?
+        if (username && email && password) {
+            if (!email.includes("@") && !email.includes('.')) {
+                return console.log('Invalid email address')
+            }
+
+            const res = await fetch('http://localhost:3000/api/auth/register', {
+                method: 'POST',
+                body: JSON.stringify({
+                    username,
+                    email,
+                    password
+                })
+            })
+
+            const data = await res.json()
+
+            if (!data) {
+                return {
+                    notFound: true
+                }
+            }
+
+            console.log(data)
+        } else {
+            console.log("Invalid input.")
+        }
+    }
+
     render() {
         return (
             <div className={styles.signUpContainer}>
@@ -43,7 +79,7 @@ class SignUpForm extends React.Component {
 
                     <div className={styles.buttonContainer}>
                         <button className={styles.btnClear} onClick={this.clearInput}>Clear</button>
-                        <button className={styles.btnSignUp}>Sign Up</button>
+                        <button className={styles.btnSignUp} onClick={this.validateInput}>Sign Up</button>
                     </div>
                 </form>
             </div>
