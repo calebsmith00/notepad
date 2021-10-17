@@ -1,0 +1,34 @@
+@import './authVariables.module.scss';
+@import '../../styles/variables.scss';
+
+.signInContainer {
+    @include authContainer;
+}
+
+.signInForm {
+    @include authForm;
+}
+
+.signInInput {
+    @include authFormInput;
+}
+
+.btnContainer {
+    @include authButtonContainer;
+}
+
+.btn {
+    @include authButton;
+}
+
+.btnClear {
+    @include authButtonClear;
+}
+
+.btnLogin {
+    background: $successBtn;
+
+    &:hover {
+        background: $successBtnHover;
+    }
+}

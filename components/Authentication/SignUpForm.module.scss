@@ -1,62 +1,56 @@
 @import '../../styles/variables.scss';
+@import './authVariables.module.scss';
 
 .signUpContainer {
-    min-height: 100vh;
-    width: 100%;
-    position: absolute;
-    top: 0;
-    display: flex;
+    @include authContainer;
 }
 
 .signUpForm {
-    width: 25%;
-    display: flex;
-    flex-direction: column;    
-    margin: auto;  
-    font-size: 1.5rem;
-    font-family: $robotoFont;
-    border: 1px solid black;
-    padding: 2rem 3rem;
+    @include authForm;
 }
 
 
-.signUpForm input {
-    padding: .4rem;
-    margin: .7rem;
-    border: 1px solid rgb(133, 130, 130);
-    border-radius: 1.5rem;
+.formInput {
+    @include authFormInput;
 }
 
 .buttonContainer {
-    display: flex;
-    justify-content: center;
-    margin: 1.2rem;
+    @include authButtonContainer;
 }
 
-.buttonContainer button {
-    border: 1px solid grey;
-    border-radius: .5rem;
-    box-shadow: 0px 1px 2px rgb(0,0,0);
-    padding: .5rem 3em;
-    margin: .5rem;
-    color: #eee;
-    font-size: 1.1rem;
-    font-family: $robotoFont;
-    text-shadow: 1px 1px rgb(97, 95, 95);
+.btn {
+    @include authButton;
 }
 
 .btnClear {
-    background: rgb(235, 63, 63);
-}
-
-.btnClear:hover {
-    background: rgb(189, 51, 51);
+    @include authButtonClear;
 }
 
 .btnSignUp {
     background: $successBtn;
+
+    &:hover {
+        background: $successBtnHover;
+    }
 }
 
-.btnSignUp:hover {
-    background: $successBtnHover;
+.error {
+    text-align: center;
+    font-size: 1.2rem;
+}
+
+.goodPassword {
+    border: 2px solid green;
+}
+
+.goodPassword:focus {
+    border: 2px solid green;
+}
+
+.badPassword {
+    border: 2px solid red;
+}
+
+.badPassword:focus {
+    border: 2px solid red;
 }

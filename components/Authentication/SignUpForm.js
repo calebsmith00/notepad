@@ -8,7 +8,9 @@ class SignUpForm extends React.Component {
         this.state = {
             username: "",
             password: "",
-            email: ""
+            email: "",
+            error: "",
+            passwordRequirementMet: "uninitialized"
         }
     }
 
@@ -24,7 +26,9 @@ class SignUpForm extends React.Component {
         this.setState({
             username: "",
             password: "",
-            email: ""
+            email: "",
+            error: "",
+            passwordRequirementMet: "uninitialized"
         })
     }
 
@@ -38,7 +42,7 @@ class SignUpForm extends React.Component {
         // Is there some sort of input?
         if (username && email && password) {
             if (!email.includes("@") && !email.includes('.')) {
-                return console.log('Invalid email address')
+                return this.setState({ error: 'Invalid email address! '})
             }
 
             const res = await fetch('http://localhost:3000/api/auth/register', {
@@ -55,15 +59,32 @@ class SignUpForm extends React.Component {
 
             const data = await res.json()
 
-            if (!data) {
-                return {
-                    notFound: true
-                }
-            }
-
-            console.log(data)
         } else {
-            console.log("Invalid input.")
+            this.setState({ error: 'Invalid input' })
+        }
+    }
+
+    onChangePassword = e => {
+        let password = e.target.value
+
+        this.setState({password})
+
+        if (password.length < 8 && password.length > 1) {
+            this.setState({
+                passwordRequirementMet: false 
+            })
+        } else {
+            let regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+
+            if (!regex.test(password)) {
+                this.setState({
+                    passwordRequirementMet: false
+                })
+            } else {
+                this.setState({
+                    passwordRequirementMet: true
+                })
+            }
         }
     }
 
@@ -72,19 +93,29 @@ class SignUpForm extends React.Component {
             <div className={styles.signUpContainer}>
                 <form className={styles.signUpForm}>
                     <label htmlFor="username">Username</label>
-                    <input type="text" name="username" onChange={this.onChange} value={this.state.username} />
+                    <input className={styles.formInput} type="text" name="username" onChange={this.onChange} value={this.state.username} />
                     
                     <label htmlFor="email">Email</label>
-                    <input type="text" name="email" onChange={this.onChange} value={this.state.email} />
+                    <input className={styles.formInput} type="text" name="email" onChange={this.onChange} value={this.state.email} />
 
                     <label htmlFor="password">Password</label>
-                    <input type="password" name="password" onChange={this.onChange} value={this.state.password} />
+                    {this.state.passwordRequirementMet === "uninitialized"
+                        ? <input className={styles.formInput} type="password" name="password" onChange={this.onChangePassword} value={this.state.password} />
+                        : this.state.passwordRequirementMet ?
+                            <input className={`${styles.goodPassword} ${styles.formInput}`} type="password" name="password" onChange={this.onChangePassword} value={this.state.password} />
+                            : <input className={`${styles.badPassword} ${styles.formInput}`} type="password" name="password" onChange={this.onChangePassword} value={this.state.password} />
+                    }
+                    
 
-                    <div className={styles.buttonContainer}>
-                        <button className={styles.btnClear} onClick={this.clearInput}>Clear</button>
-                        <button className={styles.btnSignUp} onClick={this.validateInput}>Sign Up</button>
+                    <div className={styles.btnContainer}>
+                        <button className={`${styles.btnClear} ${styles.btn}`} onClick={this.clearInput}>Clear</button>
+                        <button className={`${styles.btnSignUp} ${styles.btn}`} onClick={this.validateInput}>Sign Up</button>
                     </div>
+
+                    <p className={styles.error}>{this.state.error}</p>
                 </form>
+
+
             </div>
         )
     }
