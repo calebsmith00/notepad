@@ -1,8 +1,9 @@
 import styles from '../styles/Authentication/SignInForm.module.scss'
 import Navbar from '../components/Navbar/Navbar'
 import { useRouter } from 'next/router'
+const cookie = require('cookie-cutter')
 
-export default function SignIn() {
+export default function SignIn({ loggedIn }) {
     const router = useRouter()
 
     const verifyInput = async(e) => {
@@ -28,10 +29,11 @@ export default function SignIn() {
         }
     }
 
+    console.log(loggedIn)
+
     return (
         <div>
             <Navbar darkText />
-
             <div className={styles.signInContainer}>
                 <form className={styles.signInForm} onSubmit={verifyInput}>
                     {/* Username */}

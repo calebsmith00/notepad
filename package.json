@@ -11,6 +11,8 @@
   "dependencies": {
     "bcrypt": "^5.0.1",
     "bootstrap": "^5.1.1",
+    "cookie": "^0.4.1",
+    "cookie-cutter": "^0.2.0",
     "dotenv": "^10.0.0",
     "fs": "^0.0.1-security",
     "jsonwebtoken": "^8.5.1",
