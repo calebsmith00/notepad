@@ -29,6 +29,7 @@ export default function handler(req, res) {
     let username = req.body.username
     let password = req.body.password
 
+    
     if (req.method === "POST") {
         authenticate(username, password).then(token => {
             res.status(200).json({ token })

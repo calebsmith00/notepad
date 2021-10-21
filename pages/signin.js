@@ -3,6 +3,18 @@ import Navbar from '../components/Navbar/Navbar'
 import { useRouter } from 'next/router'
 const cookie = require('cookie-cutter')
 
+async function login(url, data) {
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+
+    return res.json()
+}
+
 export default function SignIn({ loggedIn }) {
     const router = useRouter()
 
@@ -11,25 +23,15 @@ export default function SignIn({ loggedIn }) {
         const { username, password } = e.target.elements;
 
         // Submit POST request to authenticate user
-        const res = await fetch('http://localhost:3000/api/auth/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                username: username.value,
-                password: password.value
-            })
+        const verifyLogin = await login('http://localhost:3000/api/auth/login', {
+            username: username.value,
+            password: password.value
         })
 
-        const data = await res.json()
-
-        if (data.hasAccount) {
+        if (verifyLogin.token) {
             router.push('http://localhost:3000')
         }
     }
-
-    console.log(loggedIn)
 
     return (
         <div>
