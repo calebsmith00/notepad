@@ -1,5 +1,5 @@
-@import './authVariables.module.scss';
-@import '../../styles/variables.scss';
+@import '../../components/Authentication/authVariables.module.scss';
+@import '../variables.scss';
 
 .signInContainer {
     @include authContainer;
