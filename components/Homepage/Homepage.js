@@ -9,7 +9,7 @@ export default function Homepage() {
             <Image src={background} className={styles.backgroundImage} layout="responsive" />
             <div className={styles.homepage}>
                 <h1>Hello! Welcome to the Notes App</h1>
-                <Link href="notes">
+                <Link href="/notes">
                     <a className={styles.getStartedLink}>Get Started</a>
                 </Link>
             </div>
