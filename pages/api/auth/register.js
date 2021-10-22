@@ -44,12 +44,11 @@ async function register(username, email, password) {
                 `
     let doesUserExist = await accountExists(username, email)
     if (!doesUserExist) { 
-        connection.query(sql, [...values], (err, results) => {
-            if (err) return console.log(err)
-            console.log(results)
-        })
+        let results = connection.awaitQuery(sql, [...values])
+        if (results)
+            return { error: false, success: true }
     } else {
-        console.log("You already have an acoount")
+        return { error: true, errorMsg: 'You already have an account' }
     }
 
     connection.awaitEnd()
@@ -60,10 +59,17 @@ export default function handler(req, res) {
     if (req.method === "POST") {
         if (req.body) {
             hashPassword(password).then(data => {
-                register(username, email, data)
+                register(username, email, data).then(results => {
+                    console.log(results)
+                    if (!results.error) {
+                        console.log(results)
+                        res.status(200).json(results)
+                    } else {
+                        res.status(200).json(results)
+                    }
+                })
             })
         }
-        res.status(200).json({ error: null, post: 'success' })
     } else {
         res.status(200).json({ error: null })
     }
