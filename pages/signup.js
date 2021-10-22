@@ -10,6 +10,7 @@ export default function SignUp() {
     const validateInput = async(e) => {
         e.preventDefault()
 
+        // Get input values from form
         let { username, email, password } = e.target.elements;
         username = username.value 
         email = email.value
@@ -21,6 +22,7 @@ export default function SignUp() {
                 return setError({ error: true, errorMsg: 'Invalid email address'})
             }
 
+            // Submit registration POST request and wait for a response
             const res = await fetch('http://localhost:3000/api/auth/register', {
                 method: 'POST',
                 headers: {
@@ -34,9 +36,7 @@ export default function SignUp() {
             })
 
             const data = await res.json()
-
-            console.log(data)
-
+            
             if (!data.success) {
                 setError({ error: true, errorMsg: "Invalid login data" })
             } else {
