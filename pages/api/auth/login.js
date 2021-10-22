@@ -8,7 +8,7 @@ async function authenticate(username, password) {
     let token = "";
     const connection = mysql.createConnection(dbConfig)
 
-    connection.on('error', (err) => console.log(err))
+    connection.on('error', (error) => console.error(error))
 
     let sql = 'SELECT username, password FROM users WHERE username = ?'
     let result = await connection.awaitQuery(sql, username)
@@ -17,22 +17,28 @@ async function authenticate(username, password) {
 
             if (validLogin) {
                 token = await jwt.sign(username, process.env.JSON_SECRET)
+                return token
+            } else {
+                return false
             }
+
     } else {
         console.log('Invalid login')
+        return false
     }
-
-    return token
 }
 
 export default function handler(req, res) {
     let username = req.body.username
     let password = req.body.password
-
     
     if (req.method === "POST") {
         authenticate(username, password).then(token => {
-            res.status(200).json({ token })
+            if (token) {
+                res.status(200).json({ token, invalidCredentials: false })
+            } else {
+                res.status(200).json({ invalidCredentials: true })
+            }
         })
     } else {
         res.status(200).json({})

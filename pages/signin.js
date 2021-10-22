@@ -1,6 +1,7 @@
 import styles from '../styles/Authentication/SignInForm.module.scss'
 import Navbar from '../components/Navbar/Navbar'
 import { useRouter } from 'next/router'
+import { useState } from 'react'
 const cookie = require('cookie-cutter')
 
 async function login(url, data) {
@@ -15,8 +16,10 @@ async function login(url, data) {
     return res.json()
 }
 
-export default function SignIn({ loggedIn }) {
+export default function SignIn() {
     const router = useRouter()
+    const [loggedIn, setLoggedIn] = useState()
+    const [formErrors, setFormErrors] = useState({ error: null, errorMsg: "" })
 
     const verifyInput = async(e) => {
         e.preventDefault()
@@ -28,8 +31,12 @@ export default function SignIn({ loggedIn }) {
             password: password.value
         })
 
-        if (verifyLogin.token) {
-            router.push('http://localhost:3000')
+        if (!!verifyLogin.token) {
+            setLoggedIn(true)
+            return router.replace('/')
+        } else {
+            setLoggedIn(false)
+            setFormErrors({ error: 'INVALID_CREDENTIALS', errorMsg: 'You have entered invalid credentials'})
         }
     }
 
@@ -48,7 +55,15 @@ export default function SignIn({ loggedIn }) {
 
                     {/* Submit buttons */}
                     <button type="submit" className={`${styles.btnLogin} ${styles.btn}`}>Login</button>
+
+                    {/* Check for valid login */}
+                    {!!formErrors.error &&
+                        formErrors.errorMsg
+                    }
+                
                 </form>
+
+
             </div>
         </div>
     )
