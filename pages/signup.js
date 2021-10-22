@@ -1,4 +1,3 @@
-import SignUpForm from "../components/Authentication/SignUpForm"
 import Navbar from '../components/Navbar/Navbar'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
@@ -37,7 +36,7 @@ export default function SignUp() {
             const data = await res.json()
 
             console.log(data)
-            
+
             if (!data.success) {
                 setError({ error: true, errorMsg: "Invalid login data" })
             } else {
