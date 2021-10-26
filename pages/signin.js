@@ -58,7 +58,7 @@ export default function SignIn() {
 
                     {/* Check for valid login */}
                     {!!formErrors.error &&
-                        formErrors.errorMsg
+                        <p className={styles.errorMsg}>{formErrors.errorMsg}</p>
                     }
                 
                 </form>
