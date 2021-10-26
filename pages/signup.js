@@ -16,10 +16,17 @@ export default function SignUp() {
         email = email.value
         password = password.value
 
+        let validPasswordOptions = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
+
         // Is there some sort of input?
         if (username && email && password) {
             if (!email.includes("@") && !email.includes('.')) {
                 return setError({ error: true, errorMsg: 'Invalid email address'})
+            }
+
+            if (!validPasswordOptions.test(password)) {
+                console.log('heyyyyy')
+                return setError({ error: true, errorMsg: 'Invalid password' })
             }
 
             // Submit registration POST request and wait for a response
@@ -38,7 +45,8 @@ export default function SignUp() {
             const data = await res.json()
             
             if (!data.success) {
-                setError({ error: true, errorMsg: "Invalid login data" })
+                let errorMsg = data.errorMsg
+                return setError({ error: true, errorMsg })
             } else {
                 router.push('/')
             }
